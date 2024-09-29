@@ -198,3 +198,52 @@ new Promise((resolve, reject) => {
  * 4. Promise.resolve() || Promise.reject(): return 하지 않으면 일반 값과 동일
  */
 
+// 프로미스 심화
+
+// 에러 핸들링
+asyncThing()
+    .then(asyncThing2)
+    .then(asyncThing3)
+    .catch(asyncRecovery)
+    .then(asyncThing4, asyncRecovery2)
+    .catch(err => console.log(err))
+    .then(() => console.log("ALL DONE"));
+
+// 멀티 핸들링
+Promise.all()
+
+const ps = Promise.all(
+    new Promise((resolve, reject) => {
+        setTimeout(() => resolve("Resolved..."), 1000)
+    }),
+    "abcde",
+    () => "NOT CALLED",
+    (() => "IIFE")()
+)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+
+/** Promise.all()
+ * 1. 일반 값 -> resolved
+ * 2. iterable 내의 요소들이 resolved 된 순간, 다음번 then 호출
+ * 3. iterable 내의 일부 요소 -> 하나 rejected -> 그 순간 catch 호출
+ */
+
+// Promise.race()
+
+/**
+ * 1. 일반 값은 resolved
+ * 2. iterable 내의 요소 중 가장 먼저 resolved || rejected 된 값을 하나 반환
+ */
+
+async function asyncCall() {
+    console.log("동기");
+    try {
+        var result = await resolveAfter2Seconds();
+
+        console.log(result);
+    } catch (err) {
+        console.log(err);
+    }
+    console.log(result, "await 이후");
+}
